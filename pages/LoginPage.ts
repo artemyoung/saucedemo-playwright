@@ -1,0 +1,28 @@
+import { Page, Locator } from '@playwright/test';
+import { PASSWORD } from './users';
+
+export class LoginPage {
+  readonly username: Locator;
+  readonly password: Locator;
+  readonly loginButton: Locator;
+  readonly error: Locator;
+  readonly errorCloseButton: Locator;
+
+  constructor(private readonly page: Page) {
+    this.username = page.getByTestId('username');
+    this.password = page.getByTestId('password');
+    this.loginButton = page.getByTestId('login-button');
+    this.error = page.getByTestId('error');
+    this.errorCloseButton = page.getByTestId('error-button');
+  }
+
+  async goto() {
+    await this.page.goto('/');
+  }
+
+  async login(username: string, password: string = PASSWORD) {
+    await this.username.fill(username);
+    await this.password.fill(password);
+    await this.loginButton.click();
+  }
+}
